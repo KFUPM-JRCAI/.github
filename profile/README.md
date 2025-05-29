@@ -32,7 +32,7 @@ JRC-AI explores AI applications across various sectors, including:
 
 ## Publications and Projects
 
-The center is actively involved in research projects and disseminates its findings through publications. (Specific details on projects and publications can be found on the [JRC-AI website](https://ri.kfupm.edu.sa/jrcai) and [the center's research cite](https://pure.kfupm.edu.sa/en/organisations/sdaia-kfupm-joint-research-center-for-artificial-intelligence)).
+The center is actively involved in research projects and disseminates its findings through publications. (Further details on projects and publications can be found on the [JRC-AI website](https://ri.kfupm.edu.sa/jrcai) and [the center's research cite](https://pure.kfupm.edu.sa/en/organisations/sdaia-kfupm-joint-research-center-for-artificial-intelligence)).
 
 
 ## Contact Us
