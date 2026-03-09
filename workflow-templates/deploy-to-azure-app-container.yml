@@ -1,0 +1,52 @@
+name: Deploy to Azure Container App
+run-name: Deploy by ${{ github.actor }} 🚀
+on:
+  push:
+    branches:
+      - production
+
+env:
+  CONTAINER_NAME: app-studentperformance
+  CONTAINER_REGISTRY: jrcaidemos
+
+jobs:
+  deploy:
+    permissions:
+      id-token: write # required for azure authentication - to fetch an OIDC token
+      contents: read # required to check out the repo
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source
+      uses: actions/checkout@v6
+
+    - name: Authenticate to Azure
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Build and push image to ACR
+      run: |
+        # Build the image locally
+        docker build -t ${{ env.CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} \
+          -t ${{ env.CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:latest \
+          -f ${{ github.workspace }}/backend/Dockerfile \
+          ${{ github.workspace }}/backend
+
+        # Login to ACR using the federated identity
+        az acr login --name ${{ env.CONTAINER_REGISTRY }}
+
+        # Push both tags
+        docker push ${{ env.CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
+        docker push ${{ env.CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:latest
+
+    - name: Deploy to Azure Container App
+      uses: azure/container-apps-deploy-action@v2
+      with:
+        containerAppName: ${{ env.CONTAINER_NAME }}
+        resourceGroup: rg-demos
+        imageToDeploy: ${{ env.CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
+        #environmentVariables: >
+        #  KEY1=value1
