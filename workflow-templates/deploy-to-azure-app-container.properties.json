@@ -1,0 +1,7 @@
+{
+    "name": "Deploy to Azure Container App",
+    "description": "Builds a Docker image, pushes it to Azure Container Registry (ACR), and deploys it to Azure Container Apps using federated (OIDC) authentication.",
+    "iconName": "azure",
+    "categories": ["Deployment", "Azure", "Docker"],
+    "filePatterns": ["Dockerfile", "**/Dockerfile"]
+}
