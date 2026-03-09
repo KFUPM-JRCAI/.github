@@ -6,8 +6,10 @@ on:
       - production
 
 env:
-  CONTAINER_NAME: 
+  CONTAINER_NAME:
   CONTAINER_REGISTRY: jrcaidemos
+  DOCKERFILE_PATH: ${{ github.workspace }}/backend/Dockerfile
+  DOCKER_CONTEXT: ${{ github.workspace }}/backend
 
 jobs:
   deploy:
@@ -32,8 +34,8 @@ jobs:
         # Build the image locally
         docker build -t ${{ env.CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} \
           -t ${{ env.CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:latest \
-          -f ${{ github.workspace }}/backend/Dockerfile \
-          ${{ github.workspace }}/backend
+          -f ${{ env.DOCKERFILE_PATH }} \
+          ${{ env.DOCKER_CONTEXT }}
 
         # Login to ACR using the federated identity
         az acr login --name ${{ env.CONTAINER_REGISTRY }}
