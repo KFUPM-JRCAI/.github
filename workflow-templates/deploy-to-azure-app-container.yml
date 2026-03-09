@@ -6,7 +6,7 @@ on:
       - production
 
 env:
-  CONTAINER_NAME: app-studentperformance
+  CONTAINER_NAME: 
   CONTAINER_REGISTRY: jrcaidemos
 
 jobs:
